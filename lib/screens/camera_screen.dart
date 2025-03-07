@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:eyeforyou_plus/screens/loading_screen.dart';
+import 'package:eyeforyou_plus/widgets/custom_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 
@@ -73,7 +74,12 @@ class _CameraScreenState extends State<CameraScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("카메라 화면")),
+      appBar: CustomAppBar(
+        // 추후 혜택 정보 페이지 연결
+        onLeftButtonPressed: () {},
+        // 추후 도움말 페이지 연결
+        onHelpPressed: () {},
+      ),
       body: _controller?.value.isInitialized ?? false
           ? GestureDetector(
               onTap: _takePicture,

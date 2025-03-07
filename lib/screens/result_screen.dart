@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:eyeforyou_plus/widgets/custom_appbar.dart';
 import 'package:flutter/material.dart';
 import 'camera_screen.dart';
 
@@ -10,7 +11,15 @@ class ResultScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("결과 화면")),
+      appBar: CustomAppBar(
+        title: "사진 확인",
+        // 뒤로가기 버튼
+        onBackPressed: () {
+          Navigator.pop(context);
+        },
+        // 추후 도움말 페이지 연결
+        onHelpPressed: () {},
+      ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
