@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 import 'package:eyeforyou_plus/screens/loading_screen.dart';
 import 'package:eyeforyou_plus/widgets/custom_appbar.dart';
 import 'package:flutter/material.dart';
@@ -81,10 +80,12 @@ class _CameraScreenState extends State<CameraScreen> {
         onHelpPressed: () {},
       ),
       body: _controller?.value.isInitialized ?? false
-          ? GestureDetector(
-              onTap: _takePicture,
-              child: CameraPreview(_controller!),
-      )
+          ? Center(
+            child: GestureDetector(
+                onTap: _takePicture,
+                child: CameraPreview(_controller!),
+                  ),
+          )
           : const Center(child: CircularProgressIndicator()),
     );
   }
