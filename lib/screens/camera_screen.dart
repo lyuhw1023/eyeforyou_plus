@@ -1,8 +1,10 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:eyeforyou_plus/screens/loading_screen.dart';
 import 'package:eyeforyou_plus/widgets/custom_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
+import 'package:image/image.dart' as img;
 
 class CameraScreen extends StatefulWidget {
   const CameraScreen({super.key});
@@ -48,19 +50,56 @@ class _CameraScreenState extends State<CameraScreen> {
     }
 
     final XFile image = await _controller!.takePicture();
+    File imageFile = File(image.path);
+
+    // 3:4 비율로 크롭 처리
+    File croppedFile = await _cropTo4by3(imageFile);
+
     setState(() {
-      _imagePath = image.path;
+      _imagePath = croppedFile.path;
     });
 
     print("사진 촬영 완료: $_imagePath");
 
-    // 촬영 후 로딩 화면으로
+    // 촬영 후 로딩 화면으로, 이미지 전달
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => LoadingScreen(imagePath: _imagePath!),
       ),
     );
+  }
+
+  // 4:3 비율로 이미지 크롭
+  Future<File> _cropTo4by3(File imageFile) async {
+    img.Image? image = img.decodeImage(imageFile.readAsBytesSync());
+    if (image == null) {
+      print("이미지 디코딩 실패");
+      return imageFile; // 실패 시 원본 반환
+    }
+
+    final width = image.width;
+    final height = image.height;
+
+    // 4:3 비율로 크롭
+    int targetHeight = (width * 4) ~/ 3;
+
+    if (targetHeight < height) {
+      int yOffset = (height - targetHeight) ~/ 2;
+      image = img.copyCrop(
+        image,
+        x: 0,
+        y: yOffset,
+        width: width,
+        height: targetHeight,
+      );
+    }
+
+    // 크롭된 이미지를 새로운 파일로 저장
+    File croppedFile = File('${imageFile.path}_cropped.jpg');
+    croppedFile.writeAsBytesSync(img.encodeJpg(image));
+
+    return croppedFile;
   }
 
 
