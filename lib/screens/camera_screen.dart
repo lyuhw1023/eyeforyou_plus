@@ -25,6 +25,11 @@ class _CameraScreenState extends State<CameraScreen> {
   }
 
   Future<void> _initializeCamera() async {
+    // 기존 컨트롤러 해제
+    if (_controller != null) {
+      await _controller!.dispose();
+    }
+
     WidgetsFlutterBinding.ensureInitialized();
     // 사용 가능한 카메라 목록
     cameras = await availableCameras();
@@ -52,7 +57,7 @@ class _CameraScreenState extends State<CameraScreen> {
     final XFile image = await _controller!.takePicture();
     File imageFile = File(image.path);
 
-    // 3:4 비율로 크롭 처리
+    // 4:3 비율로 크롭 처리
     File croppedFile = await _cropTo4by3(imageFile);
 
     setState(() {
@@ -96,7 +101,12 @@ class _CameraScreenState extends State<CameraScreen> {
     }
 
     // 크롭된 이미지를 새로운 파일로 저장
-    File croppedFile = File('${imageFile.path}_cropped.jpg');
+    /*File croppedFile = File('${imageFile.path}_cropped.jpg');
+    croppedFile.writeAsBytesSync(img.encodeJpg(image));*/
+
+    // 크롭된 이미지를 앱 캐시 디렉토리에 저장
+    final String croppedPath = '${Directory.systemTemp.path}/cropped_${DateTime.now().millisecondsSinceEpoch}.jpg';
+    File croppedFile = File(croppedPath);
     croppedFile.writeAsBytesSync(img.encodeJpg(image));
 
     return croppedFile;
@@ -106,6 +116,7 @@ class _CameraScreenState extends State<CameraScreen> {
   @override
   void dispose() {
     _controller?.dispose();
+    _controller = null;
     super.dispose();
   }
 
