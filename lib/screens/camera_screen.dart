@@ -1,10 +1,11 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:eyeforyou_plus/screens/loading_screen.dart';
+import 'package:eyeforyou_plus/screens/result_screen.dart';
 import 'package:eyeforyou_plus/widgets/custom_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:image/image.dart' as img;
+import 'package:lottie/lottie.dart';
 
 class CameraScreen extends StatefulWidget {
   const CameraScreen({super.key});
@@ -17,6 +18,7 @@ class _CameraScreenState extends State<CameraScreen> {
   CameraController? _controller;
   late List<CameraDescription> cameras;
   String? _imagePath;
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -33,11 +35,8 @@ class _CameraScreenState extends State<CameraScreen> {
     WidgetsFlutterBinding.ensureInitialized();
     // 사용 가능한 카메라 목록
     cameras = await availableCameras();
-    _controller = CameraController(
-        cameras.first,
-        ResolutionPreset.medium,
-        enableAudio: false
-    );
+    _controller = CameraController(cameras.first, ResolutionPreset.medium,
+        enableAudio: false);
 
     try {
       await _controller!.initialize();
@@ -54,25 +53,47 @@ class _CameraScreenState extends State<CameraScreen> {
       return;
     }
 
-    final XFile image = await _controller!.takePicture();
-    File imageFile = File(image.path);
-
-    // 4:3 비율로 크롭 처리
-    File croppedFile = await _cropTo4by3(imageFile);
-
+    // 로딩 화면 즉시 띄움
     setState(() {
-      _imagePath = croppedFile.path;
+      _isLoading = true;
     });
 
-    print("사진 촬영 완료: $_imagePath");
+    try {
+      final XFile image = await _controller!.takePicture();
+      File imageFile = File(image.path);
 
-    // 촬영 후 로딩 화면으로, 이미지 전달
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => LoadingScreen(imagePath: _imagePath!),
-      ),
-    );
+      // 4:3 비율로 크롭 처리
+      File croppedFile = await _cropTo4by3(imageFile);
+
+      setState(() {
+        _imagePath = croppedFile.path;
+      });
+
+      print("사진 촬영 완료: $_imagePath");
+
+      // 2초 후 결과 화면으로 이동
+      await Future.delayed(const Duration(seconds: 2));
+
+      // 이미지 전달
+      if (mounted) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ResultScreen(imagePath: _imagePath!),
+          ),
+        ).then((_) {
+          // 결과 화면에서 돌아왔을 때 로딩 해제
+          setState(() {
+            _isLoading = false;
+          });
+        });
+      }
+    } catch (e) {
+      print("사진 촬영 중 오류 발생 : $e");
+      setState(() {
+        _isLoading = false;
+      });
+    }
   }
 
   // 4:3 비율로 이미지 크롭
@@ -105,13 +126,13 @@ class _CameraScreenState extends State<CameraScreen> {
     croppedFile.writeAsBytesSync(img.encodeJpg(image));*/
 
     // 크롭된 이미지를 앱 캐시 디렉토리에 저장
-    final String croppedPath = '${Directory.systemTemp.path}/cropped_${DateTime.now().millisecondsSinceEpoch}.jpg';
+    final String croppedPath =
+        '${Directory.systemTemp.path}/cropped_${DateTime.now().millisecondsSinceEpoch}.jpg';
     File croppedFile = File(croppedPath);
     croppedFile.writeAsBytesSync(img.encodeJpg(image));
 
     return croppedFile;
   }
-
 
   @override
   void dispose() {
@@ -129,14 +150,28 @@ class _CameraScreenState extends State<CameraScreen> {
         // 추후 도움말 페이지 연결
         onHelpPressed: () {},
       ),
-      body: _controller?.value.isInitialized ?? false
-          ? Center(
-            child: GestureDetector(
-                onTap: _takePicture,
-                child: CameraPreview(_controller!),
-                  ),
+      body: Stack(children: [
+        _controller?.value.isInitialized ?? false
+            ? Center(
+                child: GestureDetector(
+                  onTap: _takePicture,
+                  child: CameraPreview(_controller!),
+                ),
+              )
+            : Container(),
+        if (_isLoading)
+          Container(
+            color: Colors.black.withOpacity(0.5),
+            child: Center(
+              child: Lottie.asset(
+                'assets/lottie/loading2.json',
+                width: 200,
+                height: 200,
+                fit: BoxFit.contain,
+              ),
+            ),
           )
-          : const Center(child: CircularProgressIndicator()),
+      ]),
     );
   }
 }
