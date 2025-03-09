@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 class ResultScreen extends StatelessWidget {
   final String imagePath;
+  final String resultText = "촬영된 제품 정보(코너/상품)";
 
   const ResultScreen({super.key, required this.imagePath});
 
@@ -26,7 +27,20 @@ class ResultScreen extends StatelessWidget {
           Expanded(
             child: Image.file(File(imagePath), fit: BoxFit.cover),
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 10),
+          // 결과값 출력
+          Padding(
+              padding: const EdgeInsets.all(16.0),
+            child: Text(
+              resultText,
+              style: const TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.w400
+              ),
+              textAlign: TextAlign.center,
+            ),
+          ),
+          const SizedBox(height: 10)
         ],
       ),
     );
