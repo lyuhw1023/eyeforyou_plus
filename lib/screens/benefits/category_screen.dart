@@ -1,3 +1,4 @@
+import 'package:eyeforyou_plus/screens/benefits/list_screen.dart';
 import 'package:eyeforyou_plus/screens/benefits/selection_screen.dart';
 import 'package:eyeforyou_plus/widgets/custom_appbar.dart';
 import 'package:eyeforyou_plus/widgets/option_card.dart';
@@ -54,9 +55,10 @@ class CategoryScreen extends StatelessWidget {
   }
 
   void _navigateToListScreen(BuildContext context, String category) {
+    String severity = isSevere ? "중증" : "경증";
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => SelectionScreen()),
+      MaterialPageRoute(builder: (context) => ListScreen(severity: severity, category: category)),
     );
   }
 
