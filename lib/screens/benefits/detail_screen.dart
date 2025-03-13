@@ -1,4 +1,3 @@
-import 'package:eyeforyou_plus/widgets/custom_appbar.dart';
 import 'package:flutter/material.dart';
 
 class DetailScreen extends StatelessWidget {
@@ -31,9 +30,24 @@ class DetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CustomAppBar(
-        title: title,
-        onBackPressed: () => Navigator.pop(context),
+      appBar: AppBar(
+        backgroundColor: const Color(0xFF08436D).withOpacity(0.3),
+        automaticallyImplyLeading: false,
+        title: Text(
+          title,
+          style: const TextStyle(
+            fontSize: 22,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        toolbarHeight: 100.0,
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.close,
+                semanticLabel: "닫기"),
+            onPressed: () => Navigator.of(context). pop(),
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -41,15 +55,17 @@ class DetailScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 5),
               Text(
                 descriptions.containsKey(title)
                     ? descriptions[title]!
                     : "설명 없음",
-                style: const TextStyle(fontSize: 16),
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                  height: 1.5,
+                ),
               ),
-              const SizedBox(height: 20),
-              const Divider(),
+              const SizedBox(height: 30),
               ListView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
@@ -61,19 +77,17 @@ class DetailScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          details[index]["keyword"]!,
+                          "${index + 1}. ${details[index]["keyword"]!}",
                           style: const TextStyle(
                             fontSize: 18,
-                            fontWeight: FontWeight.w400,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                         const SizedBox(height: 5),
                         Text(
                           details[index]["detail"]!,
                           style: const TextStyle(
-                              fontSize: 14,
-                            fontWeight: FontWeight.w300
-                          ),
+                              fontSize: 15, fontWeight: FontWeight.w400),
                         ),
                         const SizedBox(height: 10),
                       ],
