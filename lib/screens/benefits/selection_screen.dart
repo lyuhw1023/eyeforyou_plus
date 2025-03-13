@@ -21,10 +21,11 @@ class SelectionScreen extends StatelessWidget {
               icon: Icons.lightbulb_outline,
               text: '중증\n(1급 ~ 3급)',
               onTap: () {
+                String severity = "중증";
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => CategoryScreen(isSevere: true),
+                    builder: (context) => CategoryScreen(severity: severity),
                   ),
                 );
               },
@@ -34,10 +35,11 @@ class SelectionScreen extends StatelessWidget {
               icon: Icons.highlight_outlined,
               text: '경증\n(4급 ~ 6급)',
               onTap: () {
+                String severity = "경증";
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => CategoryScreen(isSevere: false),
+                    builder: (context) => CategoryScreen(severity: severity),
                   ),
                 );
               },
@@ -48,7 +50,7 @@ class SelectionScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildSelectionButton(
+  /*Widget _buildSelectionButton(
       BuildContext context, String label, bool isServere) {
     return ElevatedButton(
       onPressed: () {
@@ -65,5 +67,5 @@ class SelectionScreen extends StatelessWidget {
       ),
       child: Text(label),
     );
-  }
+  }*/
 }

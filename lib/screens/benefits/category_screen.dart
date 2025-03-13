@@ -1,14 +1,13 @@
 import 'package:eyeforyou_plus/screens/benefits/list_screen.dart';
-import 'package:eyeforyou_plus/screens/benefits/selection_screen.dart';
 import 'package:eyeforyou_plus/widgets/custom_appbar.dart';
 import 'package:eyeforyou_plus/widgets/option_card.dart';
 import 'package:eyeforyou_plus/widgets/selection_modal.dart';
 import 'package:flutter/material.dart';
 
 class CategoryScreen extends StatelessWidget {
-  final bool isSevere;
+  final String severity;
 
-  const CategoryScreen({Key? key, required this.isSevere}) : super(key: key);
+  const CategoryScreen({Key? key, required this.severity}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +54,6 @@ class CategoryScreen extends StatelessWidget {
   }
 
   void _navigateToListScreen(BuildContext context, String category) {
-    String severity = isSevere ? "중증" : "경증";
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => ListScreen(severity: severity, category: category)),
