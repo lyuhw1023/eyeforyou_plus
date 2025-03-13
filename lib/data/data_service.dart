@@ -27,17 +27,16 @@ class Benefit {
       category: List<String>.from(json["category"]),
       content: List<Map<String, String>>.from(json["content"].map((item) =>
       {
-        "keyword": item["keyword"],
-        "detail": item["detail"],
+        "keyword": item["keyword"] as String,
+        "detail": item["detail"].toString(),
       })),
       url: json["url"],
     );
   }
-
-  // json 파일 불러오기
-   Future<List<Benefit>> loadBenefits() async {
-    final String response = await rootBundle.loadString("assets/crawling_results.json");
-    final List<dynamic> data = json.decode(response);
-    return data.map((json) => Benefit.fromJson(json)).toList();
-   }
+}
+// json 파일 불러오기
+Future<List<Benefit>> loadBenefits() async {
+  final String response = await rootBundle.loadString("assets/crawling_results.json");
+  final List<dynamic> data = json.decode(response);
+  return data.map((json) => Benefit.fromJson(json)).toList();
 }
