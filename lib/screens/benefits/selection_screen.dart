@@ -22,6 +22,7 @@ class SelectionScreen extends StatelessWidget {
               text: '중증\n(1급 ~ 3급)',
               onTap: () {
                 String severity = "중증";
+                print("severity : $severity");
                 Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -36,6 +37,7 @@ class SelectionScreen extends StatelessWidget {
               text: '경증\n(4급 ~ 6급)',
               onTap: () {
                 String severity = "경증";
+                print("severity : $severity");
                 Navigator.push(
                   context,
                   MaterialPageRoute(

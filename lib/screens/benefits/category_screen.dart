@@ -54,6 +54,7 @@ class CategoryScreen extends StatelessWidget {
   }
 
   void _navigateToListScreen(BuildContext context, String category) {
+    print("$severity, $category");
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => ListScreen(severity: severity, category: category)),
