@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:eyeforyou_plus/screens/benefits/selection_screen.dart';
 import 'package:eyeforyou_plus/screens/result_screen.dart';
 import 'package:eyeforyou_plus/widgets/custom_appbar.dart';
 import 'package:flutter/material.dart';
@@ -145,8 +146,13 @@ class _CameraScreenState extends State<CameraScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        // 추후 혜택 정보 페이지 연결
-        onLeftButtonPressed: () {},
+        // 혜택 정보 페이지
+        onLeftButtonPressed: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => SelectionScreen()),
+          );
+        },
         // 추후 도움말 페이지 연결
         onHelpPressed: () {},
       ),
