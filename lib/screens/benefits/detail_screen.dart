@@ -1,31 +1,10 @@
+import 'package:eyeforyou_plus/data/data_service.dart';
 import 'package:flutter/material.dart';
 
 class DetailScreen extends StatelessWidget {
-  final String title;
+  final Benefit benefit;
 
-  DetailScreen({Key? key, required this.title}) : super(key: key);
-
-  final Map<String, String> descriptions = {
-    "장애인 콜택시 지원": "장애인을 위한 이동 서비스 지원",
-    "건강보험": "특정 질환자 및 장애인 대상 건강보험 혜택",
-    "긴급복지": "긴급 상황에서 제공되는 복지 지원",
-    "재난적 의료비 지원": "예상치 못한 의료비 부담 완화를 위한 지원",
-  };
-
-  final List<Map<String, String>> details = [
-    {
-      "keyword": "서비스 대상",
-      "detail": "만 18세 미만 장애인 아동",
-    },
-    {
-      "keyword": "지원 내용",
-      "detail": "장애인 이동 서비스, 의료비 지원",
-    },
-    {
-      "keyword": "신청 방법",
-      "detail": "시청 및 주미센터 방문 신청",
-    },
-  ];
+  const DetailScreen({Key? key, required this.benefit}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +13,7 @@ class DetailScreen extends StatelessWidget {
         backgroundColor: const Color(0xFF08436D).withOpacity(0.3),
         automaticallyImplyLeading: false,
         title: Text(
-          title,
+          benefit.title,
           style: const TextStyle(
             fontSize: 22,
             fontWeight: FontWeight.bold,
@@ -49,16 +28,13 @@ class DetailScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: SingleChildScrollView(
+      body: SingleChildScrollView(
+          padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                descriptions.containsKey(title)
-                    ? descriptions[title]!
-                    : "설명 없음",
+                benefit.description,
                 style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w500,
@@ -69,7 +45,7 @@ class DetailScreen extends StatelessWidget {
               ListView.builder(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
-                itemCount: details.length,
+                itemCount: benefit.content.length,
                 itemBuilder: (context, index) {
                   return Padding(
                     padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -77,7 +53,7 @@ class DetailScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "${index + 1}. ${details[index]["keyword"]!}",
+                          "${index + 1}. ${benefit.content[index]["keyword"]!}",
                           style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
@@ -85,7 +61,7 @@ class DetailScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 5),
                         Text(
-                          details[index]["detail"]!,
+                          benefit.content[index]["detail"]!,
                           style: const TextStyle(
                               fontSize: 15, fontWeight: FontWeight.w400),
                         ),
@@ -98,7 +74,6 @@ class DetailScreen extends StatelessWidget {
             ],
           ),
         ),
-      ),
     );
   }
 }
