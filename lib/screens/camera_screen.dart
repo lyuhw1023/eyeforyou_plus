@@ -33,7 +33,6 @@ class _CameraScreenState extends State<CameraScreen> {
       await _controller!.dispose();
     }
 
-    //WidgetsFlutterBinding.ensureInitialized();
     // 사용 가능한 카메라 목록
     cameras = await availableCameras();
     _controller = CameraController(cameras.first, ResolutionPreset.medium,
@@ -65,7 +64,6 @@ class _CameraScreenState extends State<CameraScreen> {
       File croppedFile = await provider.cropTo4by3(imageFile);
 
       provider.setImagePath(croppedFile.path, context);
-      provider.setLoading(false);
 
     } catch (e) {
       print("사진 촬영 중 오류 발생 : $e");

@@ -31,7 +31,9 @@ class CameraProvider extends ChangeNotifier {
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => const ResultScreen()),
-      );
+      ).then((_) {
+        setLoading(false);
+      });
     }
   }
 
