@@ -2,12 +2,31 @@ import 'dart:io';
 import 'package:eyeforyou_plus/screens/helps/help_result.dart';
 import 'package:eyeforyou_plus/widgets/custom_appbar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
-class ResultScreen extends StatelessWidget {
+class ResultScreen extends StatefulWidget {
   final String imagePath;
-  final String resultText = "촬영된 제품 정보(코너/상품)";
+  final String resultText;
 
-  const ResultScreen({super.key, required this.imagePath});
+  const ResultScreen(
+      {super.key,
+        required this.imagePath,
+        this.resultText = "촬영된 제품 정보(코너/상품)"});
+
+  @override
+  State<ResultScreen> createState() => _ResultScreenState();
+}
+
+class _ResultScreenState extends State<ResultScreen> {
+
+  @override
+  void initState() {
+    super.initState();
+
+    Future.delayed(Duration(milliseconds: 500), () {
+      SemanticsService.announce(widget.resultText, TextDirection.ltr);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,18 +50,15 @@ class ResultScreen extends StatelessWidget {
         children: [
           // 촬영한 이미지 표시
           Expanded(
-            child: Image.file(File(imagePath), fit: BoxFit.cover),
+            child: Image.file(File(widget.imagePath), fit: BoxFit.cover),
           ),
           const SizedBox(height: 10),
           // 결과값 출력
           Padding(
-              padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(16.0),
             child: Text(
-              resultText,
-              style: const TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.w400
-              ),
+              widget.resultText,
+              style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
               textAlign: TextAlign.center,
             ),
           ),

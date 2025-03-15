@@ -21,30 +21,42 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       // null이면 로고 표시
       centerTitle: true,
       leading: onBackPressed != null
-          ? IconButton(
-              // 뒤로가기 버튼
-              icon: const Icon(Icons.arrow_back),
-              onPressed: onBackPressed,
+          ? Semantics(
+              label: "뒤로 가기 버튼",
+              excludeSemantics: true,
+              child: IconButton(
+                // 뒤로가기 버튼
+                icon: const Icon(Icons.arrow_back),
+                onPressed: onBackPressed,
+              ),
             )
           : (onLeftButtonPressed != null
-              ? IconButton(
-                  // 혜택 페이지 버튼
-                  icon: const Icon(Icons.more_horiz),
-                  onPressed: onLeftButtonPressed,
+              ? Semantics(
+                  label: "혜택 정보 보러가기",
+                  excludeSemantics: true,
+                  child: IconButton(
+                    // 혜택 페이지 버튼
+                    icon: const Icon(Icons.more_horiz),
+                    onPressed: onLeftButtonPressed,
+                  ),
                 )
               : null),
       title: title != null
           ? Text(title!,
               // 화면 제목 표시
               style: const TextStyle(fontWeight: FontWeight.bold))
-            // 로고 이미지 표시
+          // 로고 이미지 표시
           : Image.asset('assets/images/logo.png', height: 130),
       actions: [
         // 도움말 버튼
         if (onHelpPressed != null)
-          IconButton(
-            icon: const Icon(Icons.question_mark_rounded),
-            onPressed: onHelpPressed,
+          Semantics(
+            label: "도움말 버튼",
+            excludeSemantics: true,
+            child: IconButton(
+              icon: const Icon(Icons.question_mark_rounded),
+              onPressed: onHelpPressed,
+            ),
           ),
       ],
     );

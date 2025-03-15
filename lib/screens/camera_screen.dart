@@ -6,6 +6,7 @@ import 'package:eyeforyou_plus/screens/result_screen.dart';
 import 'package:eyeforyou_plus/widgets/custom_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
+import 'package:flutter/rendering.dart';
 import 'package:image/image.dart' as img;
 import 'package:lottie/lottie.dart';
 
@@ -165,9 +166,19 @@ class _CameraScreenState extends State<CameraScreen> {
       body: Stack(children: [
         _controller?.value.isInitialized ?? false
             ? Center(
-                child: GestureDetector(
-                  onTap: _takePicture,
-                  child: CameraPreview(_controller!),
+                child: Semantics(
+                  label: "카메라",
+                  child: GestureDetector(
+                    onTap: () {
+                      // 비동기적으로 "로딩중" 읽음
+                      Future.microtask(() {
+                        SemanticsService.announce("로딩 중", TextDirection.ltr);
+                      });
+                      // 사진 촬영 실행
+                      _takePicture();
+                    },
+                    child: CameraPreview(_controller!),
+                  ),
                 ),
               )
             : Container(),

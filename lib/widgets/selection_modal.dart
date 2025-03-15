@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 class SelectionModal {
   // 모달창 띄우기
@@ -12,6 +13,11 @@ class SelectionModal {
         ? ["영유아", "아동청소년", "성인", "노인"]
         : ["생활안정", "가족지원", "고용", "거주/이용", "보육/교육", "건강/의료",
       "문화/여가", "편의", "보조기기", "권익", "상담", "바우처"];
+
+    // 모달 열릴 때 음성 안내 추가
+    Future.microtask(() {
+      SemanticsService.announce("$categoryType 선택 창이 열렸습니다. 원하는 항복을 선택하세요.", TextDirection.ltr);
+    });
 
     showModalBottomSheet(
         context: context,
