@@ -33,10 +33,21 @@ class Benefit {
       url: json["url"],
     );
   }
-}
-// json 파일 불러오기
-Future<List<Benefit>> loadBenefits() async {
-  final String response = await rootBundle.loadString("assets/crawling_result_final.json");
-  final List<dynamic> data = json.decode(response);
-  return data.map((json) => Benefit.fromJson(json)).toList();
+
+  // json 파일 불러오기
+  static Future<List<Benefit>> loadBenefits() async {
+    try {
+      final String response =
+      await rootBundle.loadString("assets/crawling_result_final.json");
+      final List<dynamic> data = json.decode(response);
+
+      List<Benefit> benefits = data.map((json) => Benefit.fromJson(json)).toList();
+
+      return benefits;
+    } catch (e) {
+      print("데이터 로드 중 오류 발생: $e");
+      return [];
+    }
+  }
+
 }
