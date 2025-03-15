@@ -6,11 +6,11 @@ import 'package:image/image.dart' as img;
 class CameraProvider extends ChangeNotifier {
   bool _isLoading = false;
   String? _imagePath;
-  String _resutText = "촬영된 제품 정보(코너/상품)";
+  String _resultText = "촬영된 제품 정보(코너/상품)";
 
   bool get isLoading => _isLoading;
   String? get imagePath => _imagePath;
-  String get resultText => _resutText;
+  String get resultText => _resultText;
 
   void setLoading(bool value) {
     _isLoading = value;
@@ -38,7 +38,7 @@ class CameraProvider extends ChangeNotifier {
   }
 
   void setResultText(String text) {
-    _resutText = text;
+    _resultText = text;
     notifyListeners();
   }
 
