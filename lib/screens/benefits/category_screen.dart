@@ -1,17 +1,19 @@
+import 'package:eyeforyou_plus/providers/selection_provider.dart';
 import 'package:eyeforyou_plus/screens/benefits/list_screen.dart';
 import 'package:eyeforyou_plus/screens/helps/help_category.dart';
 import 'package:eyeforyou_plus/widgets/custom_appbar.dart';
 import 'package:eyeforyou_plus/widgets/option_card.dart';
 import 'package:eyeforyou_plus/widgets/selection_modal.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class CategoryScreen extends StatelessWidget {
-  final String severity;
-
-  const CategoryScreen({Key? key, required this.severity}) : super(key: key);
+  const CategoryScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<SelectionProvider>(context);
+
     return Scaffold(
       appBar: CustomAppBar(
         title: "카테고리 선택",
@@ -36,6 +38,7 @@ class CategoryScreen extends StatelessWidget {
                   context: context,
                   categoryType: "생애주기",
                   onItemSelected: (selectedItem) {
+                    provider.setCategory(selectedItem);
                     _navigateToListScreen(context, selectedItem);
                   },
                 );
@@ -50,6 +53,7 @@ class CategoryScreen extends StatelessWidget {
                   context: context,
                   categoryType: "복지서비스",
                   onItemSelected: (selectedItem) {
+                    provider.setCategory(selectedItem);
                     _navigateToListScreen(context, selectedItem);
                   },
                 );
@@ -62,10 +66,11 @@ class CategoryScreen extends StatelessWidget {
   }
 
   void _navigateToListScreen(BuildContext context, String category) {
-    print("$severity, $category");
+    final provider = Provider.of<SelectionProvider>(context, listen: false);
+    print("${provider.severity}, ${provider.category}");
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => ListScreen(severity: severity, category: category)),
+      MaterialPageRoute(builder: (context) => const ListScreen()),
     );
   }
 
