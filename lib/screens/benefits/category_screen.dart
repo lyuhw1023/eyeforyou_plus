@@ -1,4 +1,5 @@
 import 'package:eyeforyou_plus/screens/benefits/list_screen.dart';
+import 'package:eyeforyou_plus/screens/helps/help_category.dart';
 import 'package:eyeforyou_plus/widgets/custom_appbar.dart';
 import 'package:eyeforyou_plus/widgets/option_card.dart';
 import 'package:eyeforyou_plus/widgets/selection_modal.dart';
@@ -15,6 +16,13 @@ class CategoryScreen extends StatelessWidget {
       appBar: CustomAppBar(
         title: "카테고리 선택",
         onBackPressed: () => Navigator.pop(context),
+        // category 페이지 도움말
+        onHelpPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => HelpCategory()),
+          );
+        },
       ),
       body: Center(
         child: Row(

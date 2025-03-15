@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:eyeforyou_plus/screens/benefits/selection_screen.dart';
+import 'package:eyeforyou_plus/screens/helps/help_main.dart';
 import 'package:eyeforyou_plus/screens/result_screen.dart';
 import 'package:eyeforyou_plus/widgets/custom_appbar.dart';
 import 'package:flutter/material.dart';
@@ -153,8 +154,13 @@ class _CameraScreenState extends State<CameraScreen> {
               MaterialPageRoute(builder: (context) => SelectionScreen()),
           );
         },
-        // 추후 도움말 페이지 연결
-        onHelpPressed: () {},
+        // 메인 도움말 페이지
+        onHelpPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => HelpMain()),
+          );
+        },
       ),
       body: Stack(children: [
         _controller?.value.isInitialized ?? false

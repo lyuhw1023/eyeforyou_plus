@@ -1,4 +1,5 @@
 import 'package:eyeforyou_plus/screens/benefits/detail_screen.dart';
+import 'package:eyeforyou_plus/screens/helps/help_list.dart';
 import 'package:eyeforyou_plus/widgets/benefit_card.dart';
 import 'package:eyeforyou_plus/widgets/custom_appbar.dart';
 import 'package:flutter/material.dart';
@@ -30,6 +31,13 @@ class _ListScreenState extends State<ListScreen> {
       appBar: CustomAppBar(
         title: "${widget.severity} & ${widget.category}",
         onBackPressed: () => Navigator.pop(context),
+        // list 페이지 도움말
+        onHelpPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => HelpList()),
+          );
+        },
       ),
       body: FutureBuilder<List<Benefit>>(
           future: benefitsFuture,

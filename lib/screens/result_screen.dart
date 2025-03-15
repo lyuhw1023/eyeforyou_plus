@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:eyeforyou_plus/screens/helps/help_result.dart';
 import 'package:eyeforyou_plus/widgets/custom_appbar.dart';
 import 'package:flutter/material.dart';
 
@@ -17,8 +18,13 @@ class ResultScreen extends StatelessWidget {
         onBackPressed: () {
           Navigator.pop(context);
         },
-        // 추후 도움말 페이지 연결
-        onHelpPressed: () {},
+        // 결과 페이지 도움말
+        onHelpPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => HelpResult()),
+          );
+        },
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
