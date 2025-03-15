@@ -21,6 +21,8 @@ class BenefitCard extends StatelessWidget {
           children: [
             Text(
               title,
+              maxLines: 3,
+              overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.center,
               style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
             ),
