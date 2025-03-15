@@ -12,7 +12,7 @@ class CategoryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<SelectionProvider>(context);
+    final viewmodel = Provider.of<SelectionViewModel>(context);
 
     return Scaffold(
       appBar: CustomAppBar(
@@ -38,7 +38,7 @@ class CategoryScreen extends StatelessWidget {
                   context: context,
                   categoryType: "생애주기",
                   onItemSelected: (selectedItem) {
-                    provider.setCategory(selectedItem);
+                    viewmodel.setCategory(selectedItem);
                     _navigateToListScreen(context, selectedItem);
                   },
                 );
@@ -53,7 +53,7 @@ class CategoryScreen extends StatelessWidget {
                   context: context,
                   categoryType: "복지서비스",
                   onItemSelected: (selectedItem) {
-                    provider.setCategory(selectedItem);
+                    viewmodel.setCategory(selectedItem);
                     _navigateToListScreen(context, selectedItem);
                   },
                 );
@@ -66,8 +66,8 @@ class CategoryScreen extends StatelessWidget {
   }
 
   void _navigateToListScreen(BuildContext context, String category) {
-    final provider = Provider.of<SelectionProvider>(context, listen: false);
-    print("${provider.severity}, ${provider.category}");
+    final viewmodel = Provider.of<SelectionViewModel>(context, listen: false);
+    print("${viewmodel.severity}, ${viewmodel.category}");
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => const ListScreen()),

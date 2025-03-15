@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class SelectionProvider extends ChangeNotifier {
+class SelectionViewModel extends ChangeNotifier {
   String? _severity;
   String? _category;
 

@@ -48,26 +48,26 @@ class _CameraScreenState extends State<CameraScreen> {
   }
 
   Future<void> _takePicture(BuildContext context) async {
-    final provider = Provider.of<CameraProvider>(context, listen: false);
+    final viewmodel = Provider.of<CameraViewModel>(context, listen: false);
     if (_controller?.value.isInitialized != true) {
       print('Controller is not initialized');
       return;
     }
 
-    provider.setLoading(true);
+    viewmodel.setLoading(true);
 
     try {
       final XFile image = await _controller!.takePicture();
       File imageFile = File(image.path);
 
       // 4:3 비율로 크롭 처리
-      File croppedFile = await provider.cropTo4by3(imageFile);
+      File croppedFile = await viewmodel.cropTo4by3(imageFile);
 
-      provider.setImagePath(croppedFile.path, context);
+      viewmodel.setImagePath(croppedFile.path, context);
 
     } catch (e) {
       print("사진 촬영 중 오류 발생 : $e");
-      provider.setLoading(false);
+      viewmodel.setLoading(false);
     }
   }
 
@@ -80,7 +80,7 @@ class _CameraScreenState extends State<CameraScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<CameraProvider>(context);
+    final viewmodel = Provider.of<CameraViewModel>(context);
 
     return Scaffold(
       appBar: CustomAppBar(
@@ -118,7 +118,7 @@ class _CameraScreenState extends State<CameraScreen> {
                 ),
               )
             : Container(),
-        if (provider.isLoading)
+        if (viewmodel.isLoading)
           Container(
             color: Colors.black.withOpacity(0.5),
             child: Center(

@@ -11,12 +11,12 @@ class ResultScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<CameraProvider>(context, listen: false);
+    final viewmodel = Provider.of<CameraViewModel>(context, listen: false);
 
     // 0.5초 후 읽기
     Future.delayed(Duration(milliseconds: 500), () {
-      if (provider.imagePath != null) {
-        SemanticsService.announce(provider.resultText, TextDirection.ltr);
+      if (viewmodel.imagePath != null) {
+        SemanticsService.announce(viewmodel.resultText, TextDirection.ltr);
       }
     });
 
@@ -38,17 +38,17 @@ class ResultScreen extends StatelessWidget {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          if (provider.imagePath != null)
+          if (viewmodel.imagePath != null)
             // 촬영한 이미지 표시
             Expanded(
-              child: Image.file(File(provider.imagePath!), fit: BoxFit.cover),
+              child: Image.file(File(viewmodel.imagePath!), fit: BoxFit.cover),
             ),
           const SizedBox(height: 10),
           // 결과값 출력
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Text(
-              provider.resultText,
+              viewmodel.resultText,
               style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
               textAlign: TextAlign.center,
             ),

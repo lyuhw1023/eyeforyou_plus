@@ -3,7 +3,7 @@ import 'package:eyeforyou_plus/views/result_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:image/image.dart' as img;
 
-class CameraProvider extends ChangeNotifier {
+class CameraViewModel extends ChangeNotifier {
   bool _isLoading = false;
   String? _imagePath;
   String _resultText = "촬영된 제품 정보(코너/상품)";

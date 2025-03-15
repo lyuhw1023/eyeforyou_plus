@@ -11,7 +11,7 @@ class SelectionScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<SelectionProvider>(context, listen: false);
+    final viewmodel = Provider.of<SelectionViewModel>(context, listen: false);
 
     return Scaffold(
       appBar: CustomAppBar(
@@ -33,8 +33,8 @@ class SelectionScreen extends StatelessWidget {
               icon: Icons.lightbulb_outline,
               text: '중증\n(1급 ~ 3급)',
               onTap: () {
-                provider.setSeverity("중증");
-                print("severity : ${provider.severity}");
+                viewmodel.setSeverity("중증");
+                print("severity : ${viewmodel.severity}");
                 Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -48,8 +48,8 @@ class SelectionScreen extends StatelessWidget {
               icon: Icons.highlight_outlined,
               text: '경증\n(4급 ~ 6급)',
               onTap: () {
-                provider.setSeverity("경증");
-                print("severity : ${provider.severity}");
+                viewmodel.setSeverity("경증");
+                print("severity : ${viewmodel.severity}");
                 Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -63,23 +63,4 @@ class SelectionScreen extends StatelessWidget {
       ),
     );
   }
-
-  /*Widget _buildSelectionButton(
-      BuildContext context, String label, bool isServere) {
-    return ElevatedButton(
-      onPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => CategoryScreen(isSevere: isServere),
-          ),
-        );
-      },
-      style: ElevatedButton.styleFrom(
-        padding: EdgeInsets.symmetric(vertical: 15, horizontal: 40),
-        textStyle: TextStyle(fontSize: 20),
-      ),
-      child: Text(label),
-    );
-  }*/
 }
