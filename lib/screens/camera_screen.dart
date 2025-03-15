@@ -1,14 +1,14 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:eyeforyou_plus/providers/camera_provider.dart';
 import 'package:eyeforyou_plus/screens/benefits/selection_screen.dart';
 import 'package:eyeforyou_plus/screens/helps/help_main.dart';
-import 'package:eyeforyou_plus/screens/result_screen.dart';
 import 'package:eyeforyou_plus/widgets/custom_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/rendering.dart';
-import 'package:image/image.dart' as img;
 import 'package:lottie/lottie.dart';
+import 'package:provider/provider.dart';
 
 class CameraScreen extends StatefulWidget {
   const CameraScreen({super.key});
@@ -20,8 +20,6 @@ class CameraScreen extends StatefulWidget {
 class _CameraScreenState extends State<CameraScreen> {
   CameraController? _controller;
   late List<CameraDescription> cameras;
-  String? _imagePath;
-  bool _isLoading = false;
 
   @override
   void initState() {
@@ -35,7 +33,7 @@ class _CameraScreenState extends State<CameraScreen> {
       await _controller!.dispose();
     }
 
-    WidgetsFlutterBinding.ensureInitialized();
+    //WidgetsFlutterBinding.ensureInitialized();
     // 사용 가능한 카메라 목록
     cameras = await availableCameras();
     _controller = CameraController(cameras.first, ResolutionPreset.medium,
@@ -50,91 +48,29 @@ class _CameraScreenState extends State<CameraScreen> {
     }
   }
 
-  Future<void> _takePicture() async {
+  Future<void> _takePicture(BuildContext context) async {
+    final provider = Provider.of<CameraProvider>(context, listen: false);
     if (_controller?.value.isInitialized != true) {
       print('Controller is not initialized');
       return;
     }
 
-    // 로딩 화면 즉시 띄움
-    setState(() {
-      _isLoading = true;
-    });
+    provider.setLoading(true);
 
     try {
       final XFile image = await _controller!.takePicture();
       File imageFile = File(image.path);
 
       // 4:3 비율로 크롭 처리
-      File croppedFile = await _cropTo4by3(imageFile);
+      File croppedFile = await provider.cropTo4by3(imageFile);
 
-      setState(() {
-        _imagePath = croppedFile.path;
-      });
+      provider.setImagePath(croppedFile.path, context);
+      provider.setLoading(false);
 
-      print("사진 촬영 완료: $_imagePath");
-
-      // 2초 후 결과 화면으로 이동
-      await Future.delayed(const Duration(seconds: 2));
-
-      // 이미지 전달
-      if (mounted) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ResultScreen(imagePath: _imagePath!),
-          ),
-        ).then((_) {
-          // 결과 화면에서 돌아왔을 때 로딩 해제
-          setState(() {
-            _isLoading = false;
-          });
-        });
-      }
     } catch (e) {
       print("사진 촬영 중 오류 발생 : $e");
-      setState(() {
-        _isLoading = false;
-      });
+      provider.setLoading(false);
     }
-  }
-
-  // 4:3 비율로 이미지 크롭
-  Future<File> _cropTo4by3(File imageFile) async {
-    img.Image? image = img.decodeImage(imageFile.readAsBytesSync());
-    if (image == null) {
-      print("이미지 디코딩 실패");
-      return imageFile; // 실패 시 원본 반환
-    }
-
-    final width = image.width;
-    final height = image.height;
-
-    // 4:3 비율로 크롭
-    int targetHeight = (width * 4) ~/ 3;
-
-    if (targetHeight < height) {
-      int yOffset = (height - targetHeight) ~/ 2;
-      image = img.copyCrop(
-        image,
-        x: 0,
-        y: yOffset,
-        width: width,
-        height: targetHeight,
-      );
-    }
-
-    // 크롭된 이미지를 새로운 파일로 저장
-    /*File croppedFile = File('${imageFile.path}_cropped.jpg');
-    croppedFile.writeAsBytesSync(img.encodeJpg(image));*/
-
-    // 크롭된 이미지를 앱 캐시 디렉토리에 저장
-    final String croppedPath =
-        '${Directory.systemTemp.path}/cropped_${DateTime.now().millisecondsSinceEpoch}.jpg';
-    File croppedFile = File(croppedPath);
-    croppedFile.writeAsBytesSync(img.encodeJpg(image));
-
-    return croppedFile;
   }
 
   @override
@@ -146,6 +82,8 @@ class _CameraScreenState extends State<CameraScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<CameraProvider>(context);
+
     return Scaffold(
       appBar: CustomAppBar(
         // 혜택 정보 페이지
@@ -175,14 +113,14 @@ class _CameraScreenState extends State<CameraScreen> {
                         SemanticsService.announce("로딩 중", TextDirection.ltr);
                       });
                       // 사진 촬영 실행
-                      _takePicture();
+                      _takePicture(context);
                     },
                     child: CameraPreview(_controller!),
                   ),
                 ),
               )
             : Container(),
-        if (_isLoading)
+        if (provider.isLoading)
           Container(
             color: Colors.black.withOpacity(0.5),
             child: Center(

@@ -1,35 +1,25 @@
 import 'dart:io';
+import 'package:eyeforyou_plus/providers/camera_provider.dart';
 import 'package:eyeforyou_plus/screens/helps/help_result.dart';
 import 'package:eyeforyou_plus/widgets/custom_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:provider/provider.dart';
 
-class ResultScreen extends StatefulWidget {
-  final String imagePath;
-  final String resultText;
-
-  const ResultScreen(
-      {super.key,
-        required this.imagePath,
-        this.resultText = "촬영된 제품 정보(코너/상품)"});
-
-  @override
-  State<ResultScreen> createState() => _ResultScreenState();
-}
-
-class _ResultScreenState extends State<ResultScreen> {
-
-  @override
-  void initState() {
-    super.initState();
-
-    Future.delayed(Duration(milliseconds: 500), () {
-      SemanticsService.announce(widget.resultText, TextDirection.ltr);
-    });
-  }
+class ResultScreen extends StatelessWidget {
+  const ResultScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<CameraProvider>(context, listen: false);
+
+    // 0.5초 후 읽기
+    Future.delayed(Duration(milliseconds: 500), () {
+      if (provider.imagePath != null) {
+        SemanticsService.announce(provider.resultText, TextDirection.ltr);
+      }
+    });
+
     return Scaffold(
       appBar: CustomAppBar(
         title: "사진 확인",
@@ -48,16 +38,17 @@ class _ResultScreenState extends State<ResultScreen> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          // 촬영한 이미지 표시
-          Expanded(
-            child: Image.file(File(widget.imagePath), fit: BoxFit.cover),
-          ),
+          if (provider.imagePath != null)
+            // 촬영한 이미지 표시
+            Expanded(
+              child: Image.file(File(provider.imagePath!), fit: BoxFit.cover),
+            ),
           const SizedBox(height: 10),
           // 결과값 출력
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Text(
-              widget.resultText,
+              provider.resultText,
               style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w400),
               textAlign: TextAlign.center,
             ),
@@ -67,4 +58,5 @@ class _ResultScreenState extends State<ResultScreen> {
       ),
     );
   }
+
 }
