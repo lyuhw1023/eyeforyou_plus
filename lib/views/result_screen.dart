@@ -1,6 +1,6 @@
 import 'dart:io';
-import 'package:eyeforyou_plus/providers/camera_provider.dart';
-import 'package:eyeforyou_plus/screens/helps/help_result.dart';
+import 'package:eyeforyou_plus/viewmodels/camera_viewmodel.dart';
+import 'package:eyeforyou_plus/views/helps/help_result.dart';
 import 'package:eyeforyou_plus/widgets/custom_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';

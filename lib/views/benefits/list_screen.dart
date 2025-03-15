@@ -1,7 +1,7 @@
-import 'package:eyeforyou_plus/providers/list_provider.dart';
-import 'package:eyeforyou_plus/providers/selection_provider.dart';
-import 'package:eyeforyou_plus/screens/benefits/detail_screen.dart';
-import 'package:eyeforyou_plus/screens/helps/help_list.dart';
+import 'package:eyeforyou_plus/viewmodels/list_viewmodel.dart';
+import 'package:eyeforyou_plus/viewmodels/selection_viewmodel.dart';
+import 'package:eyeforyou_plus/views/benefits/detail_screen.dart';
+import 'package:eyeforyou_plus/views/helps/help_list.dart';
 import 'package:eyeforyou_plus/widgets/benefit_card.dart';
 import 'package:eyeforyou_plus/widgets/custom_appbar.dart';
 import 'package:flutter/material.dart';

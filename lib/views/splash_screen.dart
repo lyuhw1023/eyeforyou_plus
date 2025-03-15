@@ -1,4 +1,4 @@
-import 'package:eyeforyou_plus/screens/camera_screen.dart';
+import 'package:eyeforyou_plus/views/camera_screen.dart';
 import 'package:flutter/material.dart';
 
 class SplashScreen extends StatefulWidget {

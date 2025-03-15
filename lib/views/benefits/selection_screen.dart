@@ -1,6 +1,6 @@
-import 'package:eyeforyou_plus/providers/selection_provider.dart';
-import 'package:eyeforyou_plus/screens/benefits/category_screen.dart';
-import 'package:eyeforyou_plus/screens/helps/help_selection.dart';
+import 'package:eyeforyou_plus/viewmodels/selection_viewmodel.dart';
+import 'package:eyeforyou_plus/views/benefits/category_screen.dart';
+import 'package:eyeforyou_plus/views/helps/help_selection.dart';
 import 'package:eyeforyou_plus/widgets/custom_appbar.dart';
 import 'package:eyeforyou_plus/widgets/option_card.dart';
 import 'package:flutter/material.dart';

@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:eyeforyou_plus/screens/result_screen.dart';
+import 'package:eyeforyou_plus/views/result_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:image/image.dart' as img;
 

@@ -1,6 +1,6 @@
-import 'package:eyeforyou_plus/providers/selection_provider.dart';
-import 'package:eyeforyou_plus/screens/benefits/list_screen.dart';
-import 'package:eyeforyou_plus/screens/helps/help_category.dart';
+import 'package:eyeforyou_plus/viewmodels/selection_viewmodel.dart';
+import 'package:eyeforyou_plus/views/benefits/list_screen.dart';
+import 'package:eyeforyou_plus/views/helps/help_category.dart';
 import 'package:eyeforyou_plus/widgets/custom_appbar.dart';
 import 'package:eyeforyou_plus/widgets/option_card.dart';
 import 'package:eyeforyou_plus/widgets/selection_modal.dart';
