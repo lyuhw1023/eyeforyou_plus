@@ -36,7 +36,7 @@ class Benefit {
 }
 // json 파일 불러오기
 Future<List<Benefit>> loadBenefits() async {
-  final String response = await rootBundle.loadString("assets/crawling_results.json");
+  final String response = await rootBundle.loadString("assets/crawling_result_final.json");
   final List<dynamic> data = json.decode(response);
   return data.map((json) => Benefit.fromJson(json)).toList();
 }
